@@ -32,9 +32,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install R packages
+      - name: Check and install missing R packages
         run: |
-          Rscript -e 'install.packages(c(
+          Rscript -e 'pkgs <- c(
             "tidyverse",
             "tidymodels",
             "lubridate",
@@ -42,7 +42,7 @@ jobs:
             "scoringRules",
             "arrow",
             "ranger"
-          ), repos="https://cloud.r-project.org")'
+          ); missing <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing) > 0) install.packages(missing, repos="https://cloud.r-project.org")'
 
       - name: Run automatic forecast submission
         run: Rscript neon4cast/NEE_forecast.R ${{ matrix.site }}
