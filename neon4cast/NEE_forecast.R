@@ -216,14 +216,20 @@ if (nrow(final_forecast) == 0) {
   stop("Final forecast is empty for site: ", site_to_run)
 }
 
-out_file <- paste0(
-  "terrestrial_daily-",
-  as_date(ref_date),
-  "-",
-  my_model_id,
-  "-",
-  site_to_run,
-  ".csv"
+out_dir <- "site_forecasts"
+dir.create(out_dir, showWarnings = FALSE)
+
+out_file <- file.path(
+  out_dir,
+  paste0(
+    "terrestrial_daily-",
+    as_date(ref_date),
+    "-",
+    my_model_id,
+    "-",
+    site_to_run,
+    ".csv"
+  )
 )
 
 write_csv(final_forecast, out_file)
