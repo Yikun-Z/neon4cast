@@ -9,40 +9,44 @@ jobs:
     container:
       image: eco4cast/rocker-neon4cast
 
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        site: [
-          ABBY, BARR, BART, BLAN, BONA,
-          CLBJ, CPER, DCFS, DEJU, DELA,
-          DSNY, GRSM, GUAN, HARV, HEAL,
-          JERC, JORN, KONA, KONZ, LAJA,
-          LENO, MLBS, MOAB, NIWO, NOGP,
-          OAES, ONAQ, ORNL, OSBS, PUUM,
-          RMNP, SCBI, SERC, SJER, SOAP,
-          SRER, STEI, STER, TALL, TEAK,
-          TOOL, TREE, UKFS, UNDE, WOOD,
-          WREF, YELL
-        ]
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Check and install missing R packages
+      - name: Install only missing modeling packages
         run: |
           Rscript -e 'pkgs <- c(
             "tidyverse",
-            "tidymodels",
             "lubridate",
             "neon4cast",
             "scoringRules",
             "arrow",
+            "workflows",
+            "recipes",
+            "parsnip",
             "ranger"
           ); missing <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing) > 0) install.packages(missing, repos="https://cloud.r-project.org")'
 
-      - name: Run automatic forecast submission
-        run: Rscript neon4cast/NEE_forecast.R ${{ matrix.site }}
+      - name: Run forecasts site by site
+        run: |
+          sites=(
+            ABBY BARR BART BLAN BONA
+            CLBJ CPER DCFS DEJU DELA
+            DSNY GRSM GUAN HARV HEAL
+            JERC JORN KONA KONZ LAJA
+            LENO MLBS MOAB NIWO NOGP
+            OAES ONAQ ORNL OSBS PUUM
+            RMNP SCBI SERC SJER SOAP
+            SRER STEI STER TALL TEAK
+            TOOL TREE UKFS UNDE WOOD
+            WREF YELL
+          )
+
+          for site in "${sites[@]}"; do
+            echo "======================================"
+            echo "Running forecast for site: $site"
+            echo "======================================"
+            Rscript neon4cast/NEE_forecast.R "$site"
+          done
