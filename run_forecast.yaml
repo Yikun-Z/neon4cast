@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: "0 12 * * *"
+
+jobs:
+  run_forecast:
+    runs-on: ubuntu-latest
+    container:
+      image: eco4cast/rocker-neon4cast
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+ # Point to the right path, run the right Rscript command
+      - name: Run automatic forecast submission
+        run: Rscript neon4cast/NEE_forecast.R
