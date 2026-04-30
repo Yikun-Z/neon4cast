@@ -38,4 +38,8 @@ This is a case-study figure, not a global performance metric. It uses one repres
 
 ## 3. Reproducibility
 
-Model ID: `rf_hybrid_model` GitHub repository: [GitHub repository](https://github.com/Yikun-Z/neon4cast/tree/main/neon4cast) Reforecast generation code: [Reforecast code](https://github.com/Yikun-Z/neon4cast/blob/main/neon4cast/NEE_reforecast.R) Forecast generation code: [Forecast code](https://github.com/Yikun-Z/neon4cast/blob/main/neon4cast/NEE_forecast.R) Quarto report: [Quarto report](https://github.com/Yikun-Z/neon4cast/blob/main/neon4cast/rf_hybrid_model_report.qmd)
+Model ID: `rf_hybrid_model` 
+GitHub repository: [GitHub repository](https://github.com/Yikun-Z/neon4cast/tree/main/neon4cast) 
+Reforecast generation code: [Reforecast code](https://github.com/Yikun-Z/neon4cast/blob/main/neon4cast/NEE_reforecast.R) 
+Forecast generation code: [Forecast code](https://github.com/Yikun-Z/neon4cast/blob/main/neon4cast/NEE_forecast.R) 
+Quarto report: [Quarto report](https://github.com/Yikun-Z/neon4cast/blob/main/neon4cast/rf_hybrid_model_report.qmd)
