@@ -1,20 +1,37 @@
 on:
   workflow_dispatch:
   schedule:
-  - cron: "0 12 * * *"
+    - cron: "0 12 * * *"
 
 jobs:
   run_forecast:
     runs-on: ubuntu-latest
     container:
       image: eco4cast/rocker-neon4cast
+
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        site: [
+          ABBY, BARR, BART, BLAN, BONA,
+          CLBJ, CPER, DCFS, DEJU, DELA,
+          DSNY, GRSM, GUAN, HARV, HEAL,
+          JERC, JORN, KONA, KONZ, LAJA,
+          LENO, MLBS, MOAB, NIWO, NOGP,
+          OAES, ONAQ, ORNL, OSBS, PUUM,
+          RMNP, SCBI, SERC, SJER, SOAP,
+          SRER, STEI, STER, TALL, TEAK,
+          TOOL, TREE, UKFS, UNDE, WOOD,
+          WREF, YELL
+        ]
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          
- # Point to the right path, run the right Rscript command
+
       - name: Install R packages
         run: |
           Rscript -e 'install.packages(c(
@@ -26,5 +43,6 @@ jobs:
             "arrow",
             "ranger"
           ), repos="https://cloud.r-project.org")'
+
       - name: Run automatic forecast submission
-        run: Rscript neon4cast/NEE_forecast.R
+        run: Rscript neon4cast/NEE_forecast.R ${{ matrix.site }}
