@@ -60,3 +60,11 @@ jobs:
             echo "Some sites failed:$failed_sites"
             exit 1
           fi
+          
+      - name: Combine site forecasts
+        run: |
+          Rscript -e 'library(tidyverse); files <- list.files("site_forecasts", pattern = "\\.csv$", full.names = TRUE); final <- map_dfr(files, read_csv, show_col_types = FALSE); out_file <- paste0("terrestrial_daily-", as.Date(Sys.time(), tz = "UTC") - 2, "-rf_hybrid_model.csv"); write_csv(final, out_file); message("Combined file: ", out_file); message("Rows: ", nrow(final)); message("Sites: ", n_distinct(final$site_id))'
+
+      - name: Submit combined forecast
+        run: |
+          Rscript -e 'forecast_file <- paste0("terrestrial_daily-", as.Date(Sys.time(), tz = "UTC") - 2, "-rf_hybrid_model.csv"); neon4cast::submit(forecast_file = forecast_file)'
