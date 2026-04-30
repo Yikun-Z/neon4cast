@@ -15,7 +15,5 @@ jobs:
           fetch-depth: 0
           
  # Point to the right path, run the right Rscript command
-      - name: Install R packages
-        run: Rscript -e 'install.packages(c("tidyverse", "tidymodels", "lubridate", "neon4cast", "scoringRules", "arrow", "ranger"), repos="https://cloud.r-project.org")'
       - name: Run automatic forecast submission
         run: Rscript neon4cast/NEE_forecast.R
