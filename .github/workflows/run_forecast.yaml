@@ -31,22 +31,32 @@ jobs:
 
       - name: Run forecasts site by site
         run: |
-          sites=(
-            ABBY BARR BART BLAN BONA
-            CLBJ CPER DCFS DEJU DELA
-            DSNY GRSM GUAN HARV HEAL
-            JERC JORN KONA KONZ LAJA
-            LENO MLBS MOAB NIWO NOGP
-            OAES ONAQ ORNL OSBS PUUM
-            RMNP SCBI SERC SJER SOAP
-            SRER STEI STER TALL TEAK
-            TOOL TREE UKFS UNDE WOOD
-            WREF YELL
-          )
+          failed_sites=""
 
-          for site in "${sites[@]}"; do
+          for site in ABBY BARR BART BLAN BONA \
+                      CLBJ CPER DCFS DEJU DELA \
+                      DSNY GRSM GUAN HARV HEAL \
+                      JERC JORN KONA KONZ LAJA \
+                      LENO MLBS MOAB NIWO NOGP \
+                      OAES ONAQ ORNL OSBS PUUM \
+                      RMNP SCBI SERC SJER SOAP \
+                      SRER STEI STER TALL TEAK \
+                      TOOL TREE UKFS UNDE WOOD \
+                      WREF YELL
+          do
             echo "======================================"
             echo "Running forecast for site: $site"
             echo "======================================"
-            Rscript neon4cast/NEE_forecast.R "$site"
+
+            if Rscript neon4cast/NEE_forecast.R "$site"; then
+              echo "Success: $site"
+            else
+              echo "Failed: $site"
+              failed_sites="$failed_sites $site"
+            fi
           done
+
+          if [ -n "$failed_sites" ]; then
+            echo "Some sites failed:$failed_sites"
+            exit 1
+          fi
