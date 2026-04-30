@@ -1,4 +1,10 @@
-# install.packages("ranger")
+install.packages("ranger")
+install.packages("tidyverse")
+install.packages("tidymodels")
+install.packages("lubridate")
+install.packages("neon4cast")
+install.packages("scoringRules")
+install.packages("arrow")
 
 library(tidyverse)
 library(tidymodels)
